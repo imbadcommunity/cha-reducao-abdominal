@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
 import {
   Star,
@@ -28,11 +28,23 @@ export default function Hero() {
     offset: ["start start", "end start"],
   });
 
-  const textY = useTransform(scrollYProgress, [0, 1], [0, 120]);
-  const productY = useTransform(scrollYProgress, [0, 1], [0, -80]);
-  const productScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
-  const bgY = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const smooth = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+
+  const textY = useTransform(smooth, [0, 1], [0, 120]);
+  const productY = useTransform(smooth, [0, 1], [0, -80]);
+  const productScale = useTransform(smooth, [0, 1], [1, 1.08]);
+  const bgY = useTransform(smooth, [0, 1], [0, 200]);
+  const videoScale = useTransform(smooth, [0, 1], [1.1, 1.4]);
+  const videoOpacity = useTransform(smooth, [0, 0.5], [1, 0.5]);
+  const heroOpacity = useTransform(smooth, [0, 0.8], [1, 0]);
+
+  // Interactive text: each word spreads apart and fades as you scroll
+  const wordGap = useTransform(smooth, [0, 1], [0, 40]);
+  const titleScale = useTransform(smooth, [0, 0.6], [1, 0.85]);
+  const titleOpacity = useTransform(smooth, [0, 0.4], [1, 0.2]);
+
+  // Rotating badge with scroll velocity
+  const rotate = useTransform(smooth, [0, 1], [0, 180]);
 
   const containerVariants = {
     hidden: {},
@@ -54,28 +66,47 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-cream via-white to-green-50"
+      className="relative min-h-screen flex items-center overflow-hidden bg-green-dark"
       aria-label="Apresentação do produto"
     >
-      {/* Parallax organic background */}
+      {/* Background video */}
+      <motion.div
+        style={{ scale: videoScale, opacity: videoOpacity }}
+        className="absolute inset-0"
+      >
+        <video
+          className="w-full h-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/images/hero-tea.jpg"
+        >
+          <source src="/images/hero-video.mp4" type="video/mp4" />
+        </video>
+      </motion.div>
+
+      {/* Green overlay for readability */}
+      <div className="absolute inset-0 bg-gradient-to-r from-green-dark/95 via-green-dark/80 to-green-dark/40" />
+      <div className="absolute inset-0 bg-gradient-to-t from-green-dark/90 via-transparent to-green-dark/60" />
+
+      {/* Parallax organic background shapes */}
       <motion.div
         style={{ y: bgY }}
         className="absolute inset-0 pointer-events-none"
       >
-        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-green-100/50 organic-shape animate-float-slow" />
-        <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-green-dark/5 organic-shape-2 animate-float" />
-        <div className="absolute top-1/3 right-1/4 w-[300px] h-[300px] bg-gold/10 rounded-full blur-3xl" />
-        <div className="absolute top-20 left-1/4 w-[200px] h-[200px] bg-green-mid/10 rounded-full blur-3xl" />
+        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-green-100/10 organic-shape animate-float-slow" />
+        <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-gold/5 organic-shape-2 animate-float" />
       </motion.div>
 
       {/* Floating particles */}
-      <FloatingParticles count={16} type="leaves" className="z-[1]" />
+      <FloatingParticles count={14} type="leaves" className="z-[1] text-gold/60" />
 
-      {/* Animated gradient ring */}
+      {/* Decorative ring */}
       <motion.div
         animate={{ scale: [1, 1.15, 1], rotate: [0, 90, 0] }}
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        className="absolute top-1/2 right-[10%] w-[550px] h-[550px] border-2 border-dashed border-green-dark/10 rounded-full -translate-y-1/2 hidden lg:block"
+        className="absolute top-1/2 right-[10%] w-[550px] h-[550px] border-2 border-dashed border-white/10 rounded-full -translate-y-1/2 hidden lg:block"
       />
       <motion.div
         animate={{ scale: [1.15, 1, 1.15], rotate: [90, 0, 90] }}
@@ -88,7 +119,7 @@ export default function Hero() {
         className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full"
       >
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left: Text */}
+          {/* Left: Interactive scroll text */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -98,44 +129,51 @@ export default function Hero() {
           >
             <motion.div
               variants={itemVariants}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-dark/10 text-green-dark text-sm font-medium mb-6"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur border border-white/20 text-white text-sm font-medium mb-6"
             >
               <motion.span
                 animate={{ rotate: [0, 10, 0, -10, 0] }}
                 transition={{ duration: 2.5, repeat: Infinity }}
                 className="inline-flex"
               >
-                <Leaf size={16} />
+                <Leaf size={16} className="text-gold-light" />
               </motion.span>
               100% Ingredientes Naturais
             </motion.div>
 
+            {/* Interactive title that responds to scroll */}
             <motion.h1
-              variants={itemVariants}
+              style={{ scale: titleScale, opacity: titleOpacity }}
               className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6"
             >
-              {titleWords.map((word, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  transition={{
-                    delay: 0.4 + i * 0.12,
-                    duration: 0.7,
-                    ease: [0.22, 1, 0.36, 1] as const,
-                  }}
-                  className={`mr-3 inline-block ${
-                    word.gradient ? "text-gradient" : ""
-                  }`}
-                >
-                  {word.text}
-                </motion.span>
-              ))}
+              <motion.span style={{ display: "inline-flex", gap: wordGap }} className="flex flex-wrap">
+                {titleWords.map((word, i) => (
+                  <motion.span
+                    key={i}
+                    initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{
+                      delay: 0.4 + i * 0.12,
+                      duration: 0.7,
+                      ease: [0.22, 1, 0.36, 1] as const,
+                    }}
+                    style={{
+                      color: word.gradient ? undefined : "#fff",
+                      opacity: word.gradient ? undefined : 1,
+                    }}
+                    className={`mr-3 inline-block ${
+                      word.gradient ? "gold-gradient" : "text-white"
+                    }`}
+                  >
+                    {word.text}
+                  </motion.span>
+                ))}
+              </motion.span>
             </motion.h1>
 
             <motion.p
               variants={itemVariants}
-              className="text-lg sm:text-xl text-gray-600 mb-8 max-w-lg mx-auto lg:mx-0"
+              className="text-lg sm:text-xl text-white/70 mb-8 max-w-lg mx-auto lg:mx-0"
             >
               Uma combinação de ingredientes naturais cuidadosamente
               selecionados para complementar uma rotina equilibrada.
@@ -150,9 +188,9 @@ export default function Hero() {
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-dark text-white font-semibold rounded-xl shadow-xl shadow-green-dark/20 hover:bg-green-mid transition-colors relative overflow-hidden"
+                className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-gold text-green-dark font-semibold rounded-xl shadow-xl shadow-gold/30 hover:bg-gold-light transition-colors relative overflow-hidden"
               >
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 Quero Experimentar
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </motion.a>
@@ -161,7 +199,7 @@ export default function Hero() {
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-green-dark text-green-dark font-semibold rounded-xl hover:bg-green-dark hover:text-white transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 hover:border-white transition-colors backdrop-blur"
               >
                 Ver Benefícios
               </motion.a>
@@ -187,7 +225,7 @@ export default function Hero() {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 1.7 }}
-                  className="ml-2 text-sm text-gray-500"
+                  className="ml-2 text-sm text-white/70"
                 >
                   Mais de 5.000 clientes satisfeitos*
                 </motion.span>
@@ -196,7 +234,7 @@ export default function Hero() {
 
             <motion.div
               variants={itemVariants}
-              className="mt-6 flex flex-wrap gap-4 justify-center lg:justify-start text-sm text-gray-600"
+              className="mt-6 flex flex-wrap gap-4 justify-center lg:justify-start text-sm text-white/70"
             >
               {[
                 { icon: ShieldCheck, label: "Ingredientes naturais" },
@@ -211,7 +249,7 @@ export default function Hero() {
                   transition={{ delay: 1.8 + i * 0.1 }}
                   className="flex items-center gap-1.5"
                 >
-                  <item.icon size={16} className="text-green-dark" />
+                  <item.icon size={16} className="text-gold-light" />
                   {item.label}
                 </motion.span>
               ))}
@@ -227,37 +265,8 @@ export default function Hero() {
             <motion.div
               animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0.8, 0.5] }}
               transition={{ duration: 5, repeat: Infinity }}
-              className="absolute w-80 h-80 sm:w-[420px] sm:h-[420px] bg-green-dark/15 rounded-full blur-3xl"
+              className="absolute w-80 h-80 sm:w-[420px] sm:h-[420px] bg-gold/20 rounded-full blur-3xl"
             />
-
-            {/* Floating accent icons */}
-            <motion.div
-              animate={{ y: [-10, 10, -10], rotate: [0, 12, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-4 left-6 z-20"
-            >
-              <div className="w-14 h-14 rounded-2xl bg-white shadow-xl flex items-center justify-center">
-                <Leaf size={24} className="text-green-dark" />
-              </div>
-            </motion.div>
-            <motion.div
-              animate={{ y: [8, -8, 8], rotate: [0, -10, 0] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-              className="absolute top-16 -right-2 z-20"
-            >
-              <div className="w-12 h-12 rounded-2xl bg-white shadow-xl flex items-center justify-center">
-                <Sparkles size={22} className="text-gold" />
-              </div>
-            </motion.div>
-            <motion.div
-              animate={{ y: [-8, 8, -8], rotate: [0, 8, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-              className="absolute bottom-16 -left-4 z-20"
-            >
-              <div className="w-12 h-12 rounded-2xl bg-white shadow-xl flex items-center justify-center">
-                <Coffee size={22} className="text-green-dark" />
-              </div>
-            </motion.div>
 
             {/* Product image with floating + steam */}
             <motion.div
@@ -269,7 +278,7 @@ export default function Hero() {
               <motion.div
                 animate={{ y: [0, -14, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="relative w-72 h-80 sm:w-80 sm:h-[400px] rounded-3xl overflow-hidden shadow-2xl shadow-green-dark/30"
+                className="relative w-72 h-80 sm:w-80 sm:h-[400px] rounded-3xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10"
               >
                 <Image
                   src="/images/hero-tea.jpg"
@@ -279,7 +288,7 @@ export default function Hero() {
                   sizes="(max-width: 640px) 288px, 320px"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-green-dark/80 via-green-dark/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-green-dark/80 via-transparent to-transparent" />
 
                 {/* Steam overlay */}
                 <div className="absolute top-0 inset-x-0 h-32 overflow-hidden">
@@ -342,7 +351,7 @@ export default function Hero() {
               <motion.div
                 animate={{ y: [0, -10, 0], rotate: [0, 3, 0] }}
                 transition={{ duration: 5, repeat: Infinity, delay: 1 }}
-                className="absolute -bottom-6 -left-8 bg-white rounded-2xl shadow-2xl p-4 flex items-center gap-3"
+                className="absolute -bottom-6 -left-8 bg-white/90 backdrop-blur rounded-2xl shadow-2xl p-4 flex items-center gap-3"
               >
                 <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center">
                   <Leaf size={20} className="text-green-dark" />
@@ -351,6 +360,32 @@ export default function Hero() {
                   <p className="text-xs text-gray-400">100% Natural</p>
                   <p className="text-sm font-bold text-gray-900">Sem aditivos</p>
                 </div>
+              </motion.div>
+
+              {/* Rotating scroll badge */}
+              <motion.div
+                style={{ rotate }}
+                className="absolute -top-8 -right-10 hidden sm:block"
+              >
+                <motion.div
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                  className="w-24 h-24 relative"
+                >
+                  <svg viewBox="0 0 100 100" className="w-full h-full">
+                    <defs>
+                      <path id="circlePath" d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
+                    </defs>
+                    <text className="fill-white/60" style={{ fontSize: "9.5px", letterSpacing: "2px", textTransform: "uppercase" }}>
+                      <textPath href="#circlePath">
+                        Blend Natural Premium • Infusão Aromática •
+                      </textPath>
+                    </text>
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Leaf size={20} className="text-gold-light" />
+                  </div>
+                </motion.div>
               </motion.div>
             </motion.div>
           </motion.div>
@@ -362,7 +397,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-green-dark/50"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/60"
       >
         <span className="text-xs uppercase tracking-widest">Role para ver mais</span>
         <motion.div
