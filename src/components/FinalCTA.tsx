@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import ScrollReveal from "./ScrollReveal";
 import { ArrowRight } from "lucide-react";
 
@@ -8,25 +9,40 @@ export default function FinalCTA() {
   return (
     <section
       id="cta"
-      className="py-20 sm:py-28 bg-gradient-to-br from-green-dark via-green-mid to-green-dark relative overflow-hidden"
+      className="relative py-20 sm:py-28 bg-gradient-to-br from-green-dark via-green-mid to-green-dark overflow-hidden"
       aria-labelledby="cta-title"
     >
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/hero-tea.jpg"
+          alt=""
+          fill
+          className="object-cover opacity-15"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-green-dark/95 via-green-dark/85 to-green-dark/95" />
+      </div>
+
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-10 left-10 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
         <div className="absolute bottom-10 right-10 w-48 h-48 bg-gold/5 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/3 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <ScrollReveal>
-          <motion.div
-            animate={{ scale: [1, 1.02, 1] }}
-            transition={{ duration: 4, repeat: Infinity }}
-            className="inline-block mb-6"
-          >
-            <span className="text-6xl">🍵</span>
-          </motion.div>
+          <div className="inline-block mb-6">
+            <div className="w-20 h-20 mx-auto rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center">
+              <Image
+                src="/images/hero-tea.jpg"
+                alt="Chá Redução Abdominal"
+                width={60}
+                height={60}
+                className="rounded-full object-cover"
+              />
+            </div>
+          </div>
 
           <h2
             id="cta-title"

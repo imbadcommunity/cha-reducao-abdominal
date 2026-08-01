@@ -1,30 +1,34 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import ScrollReveal from "./ScrollReveal";
-import { TrendingUp } from "lucide-react";
+import { TrendingUp, User } from "lucide-react";
 
 const results = [
   {
-    avatar: "👩🏻",
     name: "Ana",
+    initials: "AP",
     period: "8 semanas",
     description:
       "Incluiu o chá em sua rotina matinal junto com alimentação equilibrada.",
+    image: "/images/healthy-lifestyle.jpg",
   },
   {
-    avatar: "👨🏽",
     name: "Carlos",
+    initials: "CM",
     period: "12 semanas",
     description:
       "Combinou o consumo do chá com atividade física regular.",
+    image: "/images/tea-preparation.jpg",
   },
   {
-    avatar: "👩🏼",
     name: "Fernanda",
+    initials: "FL",
     period: "6 semanas",
     description:
       "Adotou o chá como parte de seus hábitos diários de bem-estar.",
+    image: "/images/product-packaging.jpg",
   },
 ];
 
@@ -57,23 +61,49 @@ export default function Results() {
                 whileHover={{ y: -6 }}
                 className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100"
               >
-                {/* Placeholder before/after */}
+                {/* Before/After placeholder with images */}
                 <div className="grid grid-cols-2 h-48">
-                  <div className="bg-gray-100 flex flex-col items-center justify-center text-gray-400">
-                    <span className="text-4xl mb-1">{result.avatar}</span>
-                    <span className="text-xs font-medium">Início</span>
+                  <div className="relative bg-gray-100 overflow-hidden">
+                    <Image
+                      src={result.image}
+                      alt={`${result.name} - início`}
+                      fill
+                      className="object-cover grayscale opacity-60"
+                      sizes="(max-width: 640px) 50vw, 25vw"
+                    />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center mb-1">
+                        <User size={20} className="text-gray-500" />
+                      </div>
+                      <span className="text-xs font-medium text-gray-500">Início</span>
+                    </div>
                   </div>
-                  <div className="bg-green-50 flex flex-col items-center justify-center text-green-dark">
-                    <span className="text-4xl mb-1">{result.avatar}</span>
-                    <span className="text-xs font-medium flex items-center gap-1">
-                      <TrendingUp size={12} /> Progresso
-                    </span>
+                  <div className="relative bg-green-50 overflow-hidden">
+                    <Image
+                      src={result.image}
+                      alt={`${result.name} - progresso`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 50vw, 25vw"
+                    />
+                    <div className="absolute inset-0 bg-green-dark/20" />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <div className="w-10 h-10 rounded-full bg-green-dark flex items-center justify-center mb-1">
+                        <TrendingUp size={20} className="text-white" />
+                      </div>
+                      <span className="text-xs font-medium text-green-dark">Progresso</span>
+                    </div>
                   </div>
                 </div>
 
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-bold text-gray-900">{result.name}</h3>
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-green-dark flex items-center justify-center text-white text-xs font-bold">
+                        {result.initials}
+                      </div>
+                      <h3 className="font-bold text-gray-900">{result.name}</h3>
+                    </div>
                     <span className="text-xs bg-green-50 text-green-dark px-3 py-1 rounded-full font-medium">
                       {result.period}
                     </span>

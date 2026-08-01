@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ScrollReveal from "./ScrollReveal";
-import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight, Quote, User } from "lucide-react";
 
 const testimonials = [
   {
@@ -12,7 +12,7 @@ const testimonials = [
     rating: 5,
     comment:
       "Incluí o chá na minha rotina matinal e tenho me sentido mais leve e disposta. O sabor é incrível!",
-    avatar: "👩🏻",
+    initials: "AP",
   },
   {
     name: "Carlos Mendes",
@@ -20,7 +20,7 @@ const testimonials = [
     rating: 5,
     comment:
       "Não esperava muito, mas surpreendeu. O aroma é maravilhoso e o preparo é super prático. Recomendo!",
-    avatar: "👨🏽",
+    initials: "CM",
   },
   {
     name: "Fernanda Lima",
@@ -28,7 +28,7 @@ const testimonials = [
     rating: 5,
     comment:
       "Uso há dois meses e amo o sabor. Virou parte da minha rotina de cuidados comigo mesma.",
-    avatar: "👩🏼",
+    initials: "FL",
   },
   {
     name: "Roberto Alves",
@@ -36,7 +36,7 @@ const testimonials = [
     rating: 5,
     comment:
       "Chá de excelente qualidade. Os ingredientes são percebidos no sabor e no aroma. Muito satisfeito!",
-    avatar: "👨🏻",
+    initials: "RA",
   },
   {
     name: "Mariana Costa",
@@ -44,7 +44,7 @@ const testimonials = [
     rating: 5,
     comment:
       "Presenteei minha mãe e agora compramos juntas toda semana. Nosso momento de bem-estar!",
-    avatar: "👩🏾",
+    initials: "MC",
   },
 ];
 
@@ -130,7 +130,10 @@ export default function Testimonials() {
                     />
                   ))}
                 </div>
-                <div className="text-4xl mb-2">{t.avatar}</div>
+                {/* Avatar with initials */}
+                <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-green-dark flex items-center justify-center text-white font-bold text-lg">
+                  {t.initials}
+                </div>
                 <p className="font-bold text-gray-900">{t.name}</p>
                 <p className="text-gray-500 text-sm">{t.city}</p>
               </motion.div>

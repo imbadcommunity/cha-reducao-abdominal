@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import ScrollReveal from "./ScrollReveal";
 import { CupSoda, PackageCheck, Salad } from "lucide-react";
 
@@ -11,6 +12,7 @@ const steps = [
     title: "Prepare uma xícara",
     description:
       "Ferva água e despeje sobre o chá. Deixe em infusão por alguns minutos para extrair todo o sabor e aroma.",
+    image: "/images/tea-preparation.jpg",
   },
   {
     icon: PackageCheck,
@@ -18,6 +20,7 @@ const steps = [
     title: "Consuma conforme orientação",
     description:
       "Siga as instruções da embalagem para aproveitar melhor os ingredientes naturais do blend.",
+    image: "/images/product-packaging.jpg",
   },
   {
     icon: Salad,
@@ -25,6 +28,7 @@ const steps = [
     title: "Combine com hábitos saudáveis",
     description:
       "Para melhores resultados, combine com alimentação equilibrada e práticas de bem-estar no dia a dia.",
+    image: "/images/healthy-lifestyle.jpg",
   },
 ];
 
@@ -62,21 +66,25 @@ export default function HowItWorks() {
                   whileHover={{ y: -6 }}
                   className="relative text-center"
                 >
-                  {/* Step number badge */}
-                  <motion.div
-                    initial={{ scale: 0.8 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 + index * 0.15 }}
-                    className="relative z-10 mx-auto mb-6"
-                  >
-                    <div className="w-20 h-20 mx-auto rounded-full bg-white shadow-lg flex items-center justify-center border-2 border-green-dark/10">
-                      <step.icon size={32} className="text-green-dark" />
+                  {/* Step image */}
+                  <div className="relative w-full h-48 rounded-2xl overflow-hidden mb-6 mx-auto max-w-[280px]">
+                    <Image
+                      src={step.image}
+                      alt={step.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 280px, 280px"
+                    />
+                    <div className="absolute inset-0 bg-green-dark/10" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="relative z-10 w-16 h-16 rounded-full bg-white shadow-lg flex items-center justify-center">
+                        <step.icon size={28} className="text-green-dark" />
+                      </div>
                     </div>
-                    <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-gold text-white text-xs font-bold flex items-center justify-center">
+                    <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-gold text-white text-xs font-bold flex items-center justify-center">
                       {step.step}
                     </div>
-                  </motion.div>
+                  </div>
 
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
                     {step.title}

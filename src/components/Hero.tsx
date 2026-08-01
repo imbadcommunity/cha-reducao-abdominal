@@ -1,7 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Star, Leaf, Coffee, Sparkles, ShieldCheck } from "lucide-react";
+import Image from "next/image";
+import {
+  Star,
+  Leaf,
+  Coffee,
+  Sparkles,
+  ShieldCheck,
+  ArrowRight,
+} from "lucide-react";
 
 export default function Hero() {
   return (
@@ -66,15 +74,16 @@ export default function Hero() {
                 href="#cta"
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.98 }}
-                className="px-8 py-4 bg-green-dark text-white font-semibold rounded-xl shadow-lg hover:bg-green-mid transition-colors text-center"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-dark text-white font-semibold rounded-xl shadow-lg hover:bg-green-mid transition-colors"
               >
                 Quero Experimentar
+                <ArrowRight size={18} />
               </motion.a>
               <motion.a
                 href="#beneficios"
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.98 }}
-                className="px-8 py-4 border-2 border-green-dark text-green-dark font-semibold rounded-xl hover:bg-green-dark hover:text-white transition-colors text-center"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-green-dark text-green-dark font-semibold rounded-xl hover:bg-green-dark hover:text-white transition-colors"
               >
                 Ver Benefícios
               </motion.a>
@@ -136,14 +145,13 @@ export default function Hero() {
             {/* Glow behind product */}
             <div className="absolute w-72 h-72 sm:w-96 sm:h-96 bg-green-dark/10 rounded-full blur-3xl" />
 
-            {/* Floating leaves */}
+            {/* Floating leaf icons */}
             <motion.div
               animate={{ y: [-8, 8, -8], rotate: [0, 10, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-4 left-8 text-4xl select-none"
-              aria-hidden="true"
+              className="absolute -top-4 left-8"
             >
-              🍃
+              <Leaf size={32} className="text-green-dark/30" />
             </motion.div>
             <motion.div
               animate={{ y: [6, -6, 6], rotate: [0, -8, 0] }}
@@ -153,10 +161,9 @@ export default function Hero() {
                 ease: "easeInOut",
                 delay: 1,
               }}
-              className="absolute top-12 -right-4 text-3xl select-none"
-              aria-hidden="true"
+              className="absolute top-12 -right-4"
             >
-              🌿
+              <Leaf size={24} className="text-green-mid/30" />
             </motion.div>
             <motion.div
               animate={{ y: [-6, 6, -6], rotate: [0, 12, 0] }}
@@ -166,38 +173,59 @@ export default function Hero() {
                 ease: "easeInOut",
                 delay: 2,
               }}
-              className="absolute bottom-8 left-0 text-2xl select-none"
-              aria-hidden="true"
+              className="absolute bottom-8 left-0"
             >
-              🍵
+              <Coffee size={20} className="text-green-dark/20" />
             </motion.div>
 
-            {/* Product placeholder */}
+            {/* Product image */}
             <motion.div
               animate={{ y: [0, -12, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="relative w-64 h-80 sm:w-80 sm:h-[400px] rounded-3xl bg-gradient-to-b from-green-dark to-green-mid shadow-2xl flex flex-col items-center justify-center text-white p-8"
+              className="relative"
             >
-              <div className="text-6xl mb-4">🍵</div>
-              <h2 className="text-xl font-bold text-center">
-                Chá Redução
-              </h2>
-              <h3 className="text-lg font-semibold text-center text-green-100">
-                Abdominal
-              </h3>
-              <div className="mt-4 w-16 h-0.5 bg-gold rounded-full" />
-              <p className="mt-3 text-xs text-center text-green-100/80">
-                Blend Natural Premium
-              </p>
+              <div className="relative w-72 h-80 sm:w-80 sm:h-[400px] rounded-3xl overflow-hidden shadow-2xl">
+                <Image
+                  src="/images/hero-tea.jpg"
+                  alt="Chá Redução Abdominal - produto natural premium"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 288px, 320px"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-green-dark/80 via-green-dark/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                  <h2 className="text-2xl font-bold">Chá Redução</h2>
+                  <h3 className="text-lg font-semibold text-green-100">
+                    Abdominal
+                  </h3>
+                  <div className="mt-3 w-16 h-0.5 bg-gold rounded-full" />
+                  <p className="mt-2 text-sm text-green-100/80">
+                    Blend Natural Premium
+                  </p>
+                </div>
+              </div>
 
-              {/* Steam effect */}
+              {/* Steam effect using icon */}
               <motion.div
                 animate={{ opacity: [0.3, 0.7, 0.3], y: [0, -15, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
-                className="absolute -top-8 text-2xl select-none"
-                aria-hidden="true"
+                className="absolute -top-6 left-1/2 -translate-x-1/2"
               >
-                ♨️
+                <svg
+                  width="40"
+                  height="30"
+                  viewBox="0 0 40 30"
+                  fill="none"
+                  className="text-green-dark/30"
+                >
+                  <path
+                    d="M10 28C10 22 5 20 5 14C5 8 10 6 10 0M20 28C20 22 15 20 15 14C15 8 20 6 20 0M30 28C30 22 25 20 25 14C25 8 30 6 30 0"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
               </motion.div>
             </motion.div>
           </motion.div>

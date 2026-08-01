@@ -1,43 +1,50 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import ScrollReveal from "./ScrollReveal";
+import { Flower, Leaf, Wind, TreePine, Sprout } from "lucide-react";
 
 const ingredients = [
   {
-    emoji: "🌺",
+    icon: Flower,
     name: "Hibisco",
+    image: "/images/hibiscus.jpg",
     description:
       "Flor vibrante conhecida por seu sabor levemente ácido e refrescante.",
     benefits: "Rico em antioxidantes, tradicionalmente usado para bem-estar.",
   },
   {
-    emoji: "🍃",
+    icon: Leaf,
     name: "Chá Verde",
+    image: "/images/green-tea.jpg",
     description:
       "Folhas nobres com sabor suave e notas herbáceas delicadas.",
     benefits:
       "Conhecido por suas propriedades antioxidantes e benefícios à saúde.",
   },
   {
-    emoji: "🫚",
+    icon: Wind,
     name: "Gengibre",
+    image: "/images/ginger.jpg",
     description:
       "Raiz aromática que traz calor e profundidade ao blend.",
     benefits:
       "Tradicionalmente utilizado para digestive e sensação de leveza.",
   },
   {
-    emoji: "🪵",
+    icon: TreePine,
     name: "Canela",
+    image: "/images/cinnamon.jpg",
     description:
       "Especiaria clássica que adiciona doçura e complexidade.",
     benefits:
       "Associada ao metabolismo e à sensação de bem-estar geral.",
   },
   {
-    emoji: "🌿",
+    icon: Sprout,
     name: "Hortelã",
+    image: "/images/mint.jpg",
     description:
       "Erva fresca que finaliza cada gole com refrescância.",
     benefits:
@@ -77,24 +84,35 @@ export default function Ingredients() {
                   boxShadow: "0 24px 48px rgba(15, 81, 50, 0.1)",
                 }}
                 transition={{ duration: 0.3 }}
-                className="bg-gradient-to-b from-cream to-white rounded-2xl p-6 border border-green-dark/5 text-center group cursor-default"
+                className="bg-gradient-to-b from-cream to-white rounded-2xl overflow-hidden border border-green-dark/5 group cursor-default"
               >
-                <motion.div
-                  whileHover={{ scale: 1.15, rotate: 5 }}
-                  className="text-5xl mb-4 inline-block"
-                >
-                  {ingredient.emoji}
-                </motion.div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
-                  {ingredient.name}
-                </h3>
-                <p className="text-gray-500 text-sm mb-3 leading-relaxed">
-                  {ingredient.description}
-                </p>
-                <div className="pt-3 border-t border-green-dark/5">
-                  <p className="text-green-dark text-xs font-medium leading-relaxed">
-                    {ingredient.benefits}
+                {/* Ingredient image */}
+                <div className="relative h-40 overflow-hidden">
+                  <Image
+                    src={ingredient.image}
+                    alt={ingredient.name}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                  <div className="absolute bottom-3 left-3 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center">
+                    <ingredient.icon size={20} className="text-green-dark" />
+                  </div>
+                </div>
+
+                <div className="p-5 text-center">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    {ingredient.name}
+                  </h3>
+                  <p className="text-gray-500 text-sm mb-3 leading-relaxed">
+                    {ingredient.description}
                   </p>
+                  <div className="pt-3 border-t border-green-dark/5">
+                    <p className="text-green-dark text-xs font-medium leading-relaxed">
+                      {ingredient.benefits}
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             </ScrollReveal>
