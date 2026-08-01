@@ -7,7 +7,10 @@ interface ScrollRevealProps {
   children: ReactNode;
   className?: string;
   delay?: number;
-  direction?: "up" | "down" | "left" | "right";
+  direction?: "up" | "down" | "left" | "right" | "none";
+  duration?: number;
+  blur?: boolean;
+  once?: boolean;
 }
 
 export default function ScrollReveal({
@@ -15,23 +18,38 @@ export default function ScrollReveal({
   className = "",
   delay = 0,
   direction = "up",
+  duration = 0.8,
+  blur = false,
+  once = true,
 }: ScrollRevealProps) {
   const directionMap = {
-    up: { y: 40, x: 0 },
-    down: { y: -40, x: 0 },
-    left: { y: 0, x: 40 },
-    right: { y: 0, x: -40 },
+    up: { y: 60, x: 0 },
+    down: { y: -60, x: 0 },
+    left: { y: 0, x: 60 },
+    right: { y: 0, x: -60 },
+    none: { y: 0, x: 0 },
   };
 
   return (
     <motion.div
-      initial={{ opacity: 0, ...directionMap[direction] }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
+      initial={{
+        opacity: 0,
+        ...directionMap[direction],
+        filter: blur ? "blur(12px)" : "blur(0px)",
+        scale: direction === "none" ? 0.9 : 1,
+      }}
+      whileInView={{
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        filter: "blur(0px)",
+      }}
+      viewport={{ once, margin: "-80px" }}
       transition={{
-        duration: 0.7,
+        duration,
         delay,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        ease: [0.22, 1, 0.36, 1],
       }}
       className={className}
     >

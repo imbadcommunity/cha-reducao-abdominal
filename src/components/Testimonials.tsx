@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ScrollReveal from "./ScrollReveal";
-import { Star, ChevronLeft, ChevronRight, Quote, User } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
 const testimonials = [
   {
@@ -51,6 +51,7 @@ const testimonials = [
 export default function Testimonials() {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   const next = useCallback(() => {
     setDirection(1);
@@ -65,19 +66,31 @@ export default function Testimonials() {
   }, []);
 
   useEffect(() => {
+    if (paused) return;
     const timer = setInterval(next, 5000);
     return () => clearInterval(timer);
-  }, [next]);
+  }, [next, paused]);
 
   const variants = {
     enter: (dir: number) => ({
-      x: dir > 0 ? 200 : -200,
+      x: dir > 0 ? 300 : -300,
       opacity: 0,
+      rotateY: dir > 0 ? 15 : -15,
+      scale: 0.9,
     }),
-    center: { x: 0, opacity: 1 },
+    center: {
+      x: 0,
+      opacity: 1,
+      rotateY: 0,
+      scale: 1,
+      transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
+    },
     exit: (dir: number) => ({
-      x: dir > 0 ? -200 : 200,
+      x: dir > 0 ? -300 : 300,
       opacity: 0,
+      rotateY: dir > 0 ? -15 : 15,
+      scale: 0.9,
+      transition: { duration: 0.4 },
     }),
   };
 
@@ -85,24 +98,33 @@ export default function Testimonials() {
 
   return (
     <section
-      className="py-20 sm:py-28 bg-white"
+      className="relative py-20 sm:py-28 bg-white overflow-hidden"
       aria-labelledby="depoimentos-title"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Decorative quotes */}
+      <div className="absolute top-16 left-10 text-[200px] font-serif text-green-dark/5 select-none leading-none">&ldquo;</div>
+      <div className="absolute bottom-16 right-10 text-[200px] font-serif text-green-dark/5 select-none leading-none">&rdquo;</div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal className="text-center mb-16">
-          <span className="inline-block text-green-dark text-sm font-semibold tracking-widest uppercase mb-3">
-            Depoimentos
-          </span>
-          <h2
-            id="depoimentos-title"
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900"
+          <motion.span
+            whileInView={{ scale: [1, 1.2, 1] }}
+            viewport={{ once: true }}
+            className="inline-block text-green-dark text-sm font-semibold tracking-widest uppercase mb-3"
           >
+            Depoimentos
+          </motion.span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
             O que dizem nossos <span className="text-gradient">clientes</span>
           </h2>
         </ScrollReveal>
 
-        <div className="relative max-w-2xl mx-auto">
-          <div className="overflow-hidden rounded-3xl bg-cream p-8 sm:p-12 min-h-[320px] flex items-center">
+        <div
+          className="relative max-w-2xl mx-auto [perspective:1200px]"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-cream to-white p-8 sm:p-12 min-h-[340px] flex items-center shadow-xl shadow-green-dark/5 border border-green-dark/5">
             <AnimatePresence custom={direction} mode="wait">
               <motion.div
                 key={current}
@@ -111,29 +133,45 @@ export default function Testimonials() {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{ duration: 0.4, ease: "easeInOut" }}
                 className="w-full text-center"
+                style={{ transformStyle: "preserve-3d" }}
               >
-                <Quote
-                  size={40}
-                  className="text-green-dark/20 mx-auto mb-4"
-                />
-                <p className="text-gray-700 text-lg sm:text-xl leading-relaxed mb-6 italic">
+                <motion.div
+                  animate={{ rotate: [0, 8, 0], scale: [1, 1.1, 1] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                  className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-green-dark flex items-center justify-center"
+                >
+                  <Quote size={22} className="text-white" />
+                </motion.div>
+                <motion.p
+                  key={t.comment}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-gray-700 text-lg sm:text-xl leading-relaxed mb-6 italic"
+                >
                   &ldquo;{t.comment}&rdquo;
-                </p>
+                </motion.p>
                 <div className="flex items-center justify-center gap-1 mb-3">
                   {[...Array(t.rating)].map((_, i) => (
-                    <Star
+                    <motion.span
                       key={i}
-                      size={16}
-                      className="fill-gold text-gold"
-                    />
+                      initial={{ opacity: 0, scale: 0, rotate: -30 }}
+                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                      transition={{ delay: 0.3 + i * 0.1, type: "spring", stiffness: 200 }}
+                    >
+                      <Star size={16} className="fill-gold text-gold" />
+                    </motion.span>
                   ))}
                 </div>
-                {/* Avatar with initials */}
-                <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-green-dark flex items-center justify-center text-white font-bold text-lg">
+                <motion.div
+                  initial={{ scale: 0, rotate: -10 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ type: "spring", stiffness: 300, delay: 0.3 }}
+                  className="w-14 h-14 mx-auto mb-3 rounded-full bg-gradient-to-br from-green-dark to-green-mid flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-green-dark/30"
+                >
                   {t.initials}
-                </div>
+                </motion.div>
                 <p className="font-bold text-gray-900">{t.name}</p>
                 <p className="text-gray-500 text-sm">{t.city}</p>
               </motion.div>
@@ -143,11 +181,11 @@ export default function Testimonials() {
           {/* Controls */}
           <div className="flex items-center justify-center gap-4 mt-6">
             <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.15, rotate: -8 }}
+              whileTap={{ scale: 0.9 }}
               onClick={prev}
               aria-label="Depoimento anterior"
-              className="w-10 h-10 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center text-green-dark hover:bg-green-dark hover:text-white transition-colors cursor-pointer"
+              className="w-11 h-11 rounded-full bg-white border border-gray-200 shadow-lg flex items-center justify-center text-green-dark hover:bg-green-dark hover:text-white transition-colors cursor-pointer"
             >
               <ChevronLeft size={20} />
             </motion.button>
@@ -161,19 +199,19 @@ export default function Testimonials() {
                     setCurrent(i);
                   }}
                   aria-label={`Ir para depoimento ${i + 1}`}
-                  className={`w-2.5 h-2.5 rounded-full transition-colors cursor-pointer ${
-                    i === current ? "bg-green-dark" : "bg-gray-300"
+                  className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
+                    i === current ? "w-8 bg-green-dark" : "w-2.5 bg-gray-300 hover:bg-gray-400"
                   }`}
                 />
               ))}
             </div>
 
             <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.15, rotate: 8 }}
+              whileTap={{ scale: 0.9 }}
               onClick={next}
               aria-label="Próximo depoimento"
-              className="w-10 h-10 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center text-green-dark hover:bg-green-dark hover:text-white transition-colors cursor-pointer"
+              className="w-11 h-11 rounded-full bg-white border border-gray-200 shadow-lg flex items-center justify-center text-green-dark hover:bg-green-dark hover:text-white transition-colors cursor-pointer"
             >
               <ChevronRight size={20} />
             </motion.button>

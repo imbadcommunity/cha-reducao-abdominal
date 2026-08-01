@@ -2,7 +2,9 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import TiltCard from "./TiltCard";
 import ScrollReveal from "./ScrollReveal";
+import FloatingParticles from "./FloatingParticles";
 import { Flower, Leaf, Wind, TreePine, Sprout } from "lucide-react";
 
 const ingredients = [
@@ -55,18 +57,21 @@ const ingredients = [
 export default function Ingredients() {
   return (
     <section
-      className="py-20 sm:py-28 bg-white"
+      className="relative py-20 sm:py-28 bg-white overflow-hidden"
       aria-labelledby="ingredientes-title"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <FloatingParticles count={10} type="leaves" className="opacity-30" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal className="text-center mb-16">
-          <span className="inline-block text-green-dark text-sm font-semibold tracking-widest uppercase mb-3">
-            Ingredientes
-          </span>
-          <h2
-            id="ingredientes-title"
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900"
+          <motion.span
+            whileInView={{ scale: [1, 1.2, 1] }}
+            viewport={{ once: true }}
+            className="inline-block text-green-dark text-sm font-semibold tracking-widest uppercase mb-3"
           >
+            Ingredientes
+          </motion.span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
             A natureza em cada <span className="text-gradient">detalhe</span>
           </h2>
           <p className="mt-4 text-gray-500 max-w-2xl mx-auto text-lg">
@@ -75,46 +80,48 @@ export default function Ingredients() {
           </p>
         </ScrollReveal>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6 [perspective:1000px]">
           {ingredients.map((ingredient, index) => (
-            <ScrollReveal key={ingredient.name} delay={index * 0.1}>
-              <motion.div
-                whileHover={{
-                  y: -10,
-                  boxShadow: "0 24px 48px rgba(15, 81, 50, 0.1)",
-                }}
-                transition={{ duration: 0.3 }}
-                className="bg-gradient-to-b from-cream to-white rounded-2xl overflow-hidden border border-green-dark/5 group cursor-default"
-              >
-                {/* Ingredient image */}
-                <div className="relative h-40 overflow-hidden">
-                  <Image
-                    src={ingredient.image}
-                    alt={ingredient.name}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                  <div className="absolute bottom-3 left-3 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center">
-                    <ingredient.icon size={20} className="text-green-dark" />
+            <ScrollReveal key={ingredient.name} delay={index * 0.12}>
+              <TiltCard className="h-full" intensity={12}>
+                <motion.div
+                  whileHover={{ y: -8 }}
+                  className="relative h-full bg-gradient-to-b from-cream to-white rounded-3xl overflow-hidden border border-green-dark/5 group cursor-default"
+                >
+                  {/* Ingredient image */}
+                  <div className="relative h-44 overflow-hidden">
+                    <Image
+                      src={ingredient.image}
+                      alt={ingredient.name}
+                      fill
+                      className="object-cover group-hover:scale-125 group-hover:rotate-2 transition-transform duration-700 ease-out"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    <motion.div
+                      animate={{ y: [0, -5, 0], rotate: [0, 6, 0] }}
+                      transition={{ duration: 4, repeat: Infinity, delay: index * 0.5 }}
+                      className="absolute bottom-3 left-3 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg"
+                    >
+                      <ingredient.icon size={20} className="text-green-dark" />
+                    </motion.div>
                   </div>
-                </div>
 
-                <div className="p-5 text-center">
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    {ingredient.name}
-                  </h3>
-                  <p className="text-gray-500 text-sm mb-3 leading-relaxed">
-                    {ingredient.description}
-                  </p>
-                  <div className="pt-3 border-t border-green-dark/5">
-                    <p className="text-green-dark text-xs font-medium leading-relaxed">
-                      {ingredient.benefits}
+                  <div className="p-5 text-center">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">
+                      {ingredient.name}
+                    </h3>
+                    <p className="text-gray-500 text-sm mb-3 leading-relaxed">
+                      {ingredient.description}
                     </p>
+                    <div className="pt-3 border-t border-green-dark/5">
+                      <p className="text-green-dark text-xs font-medium leading-relaxed">
+                        {ingredient.benefits}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </TiltCard>
             </ScrollReveal>
           ))}
         </div>
