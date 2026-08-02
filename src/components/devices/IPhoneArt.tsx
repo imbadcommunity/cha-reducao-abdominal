@@ -1,6 +1,6 @@
 interface DeviceArtProps {
   className?: string;
-  tone?: "blue" | "kiwi";
+  tone?: "blue" | "kiwi" | "orange";
 }
 
 const tones = {
@@ -23,6 +23,16 @@ const tones = {
     ringCore: "#eef7c0",
     accent: "#a8bd73",
     faint: "#e8efd0",
+  },
+  orange: {
+    frame: ["#fff0e6", "#ffc4a3", "#e8966f"],
+    screen: ["#5c2400", "#8a3d08", "#1f0c00"],
+    glow: "rgba(255,107,26,0.6)",
+    ring: "#ff7a1a",
+    ringMid: "#ffb27d",
+    ringCore: "#ffd9bd",
+    accent: "#ffa04d",
+    faint: "#ffe0cc",
   },
 } as const;
 
