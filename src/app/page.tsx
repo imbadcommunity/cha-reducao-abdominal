@@ -6,6 +6,7 @@ import Cursor from "@/components/Cursor";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import IPhone17Pro from "@/components/IPhone17Pro";
+import AirPods from "@/components/AirPods";
 import Marquee from "@/components/Marquee";
 
 const FeaturedProducts = dynamic(() => import("@/components/FeaturedProducts"), {
@@ -49,6 +50,7 @@ export default function Home() {
       <main>
         <Hero />
         <IPhone17Pro />
+        <AirPods />
         <Marquee items={marqueeItems} direction="left" />
         <FeaturedProducts />
         <Categories />
