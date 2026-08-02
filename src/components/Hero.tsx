@@ -78,16 +78,16 @@ export default function Hero() {
             variants={itemVariants}
             className="text-white font-bold leading-[1.1] tracking-tight text-[clamp(1.9rem,5vw,3.2rem)] max-w-6xl"
           >
-            O próximo smartphone{" "}
-            <span className="kiwi-text">já está esperando por você.</span>
+            O novo iPhone,{" "}
+            <span className="kiwi-text">agora em verde kiwi.</span>
           </motion.h1>
 
           <motion.p
             variants={itemVariants}
             className="mt-7 text-lg sm:text-xl text-white/70 leading-relaxed max-w-2xl"
           >
-            Os melhores produtos Apple, com garantia, qualidade e atendimento
-            especializado. Originais, lacrados e com nota fiscal.
+            Design icônico, câmera profissional e desempenho que acompanha você
+            o dia todo. Verde kiwi, do seu jeito.
           </motion.p>
 
           <motion.div
