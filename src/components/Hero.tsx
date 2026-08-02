@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, MessageCircle, ChevronDown } from "lucide-react";
 import MagneticButton from "./MagneticButton";
 import { whatsappLink, whatsappDefaultMessage } from "@/lib/site";
@@ -23,8 +24,18 @@ const itemVariants = {
 };
 
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const textOpacity = useTransform(scrollYProgress, [0, 0.45], [1, 0]);
+  const textY = useTransform(scrollYProgress, [0, 0.45], [0, -70]);
+
   return (
     <section
+      ref={sectionRef}
       id="inicio"
       className="relative min-h-screen flex items-center overflow-hidden bg-[#0a0a0c]"
       aria-label="Apresentação da loja"
@@ -54,12 +65,15 @@ export default function Hero() {
       </div>
 
       <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="show"
+        style={{ opacity: textOpacity, y: textY }}
         className="relative z-10 container-premium pt-32 pb-28 w-full"
       >
-        <div className="flex flex-col items-center text-center">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+          className="flex flex-col items-center text-center"
+        >
           <motion.h1
             variants={itemVariants}
             className="text-white font-bold leading-[1.1] tracking-tight text-[clamp(1.9rem,5vw,3.2rem)] max-w-6xl"
@@ -101,7 +115,7 @@ export default function Hero() {
               </a>
             </MagneticButton>
           </motion.div>
-        </div>
+        </motion.div>
       </motion.div>
 
       {/* Scroll indicator */}
