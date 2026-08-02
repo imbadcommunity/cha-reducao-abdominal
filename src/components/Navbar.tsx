@@ -55,7 +55,11 @@ export default function Navbar() {
               />
             </svg>
           </span>
-          <span className="text-lg text-ink hidden sm:block">
+          <span
+            className={`text-lg hidden sm:block transition-colors ${
+              scrolled ? "text-ink" : "text-white"
+            }`}
+          >
             Apple <span className="metal-text font-extrabold">Premium</span>
           </span>
         </a>
@@ -66,7 +70,11 @@ export default function Navbar() {
             <a
               key={link.label}
               href={link.href}
-              className="text-sm font-medium text-ink/80 hover:text-ink link-underline transition-colors"
+              className={`text-sm font-medium link-underline transition-colors ${
+                scrolled
+                  ? "text-ink/80 hover:text-ink"
+                  : "text-white/85 hover:text-white"
+              }`}
             >
               {link.label}
             </a>
@@ -89,7 +97,9 @@ export default function Navbar() {
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
           aria-expanded={mobileOpen}
-          className="md:hidden w-10 h-10 flex items-center justify-center rounded-full text-ink cursor-pointer"
+          className={`md:hidden w-10 h-10 flex items-center justify-center rounded-full cursor-pointer transition-colors ${
+            scrolled ? "text-ink" : "text-white"
+          }`}
         >
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>

@@ -126,6 +126,19 @@ body {
   color: transparent;
 }
 
+.kiwi-text {
+  background: linear-gradient(
+    180deg,
+    #eef7c0 0%,
+    #b9d548 45%,
+    #8fb23a 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
 .silver-ring {
   border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.06),

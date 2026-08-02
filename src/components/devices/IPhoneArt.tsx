@@ -1,8 +1,37 @@
 interface DeviceArtProps {
   className?: string;
+  tone?: "blue" | "kiwi";
 }
 
-export default function IPhoneArt({ className = "" }: DeviceArtProps) {
+const tones = {
+  blue: {
+    frame: ["#f5f5f7", "#b8b8c0", "#8e8e96"],
+    screen: ["#0b2b5c", "#123a7a", "#04101f"],
+    glow: "rgba(0,160,255,0.55)",
+    ring: "#2f7be0",
+    ringMid: "#5aa2f2",
+    ringCore: "#7fc0ff",
+    accent: "#e0c06a",
+    faint: "#cfd4e0",
+  },
+  kiwi: {
+    frame: ["#eef3da", "#c7d79a", "#a8bd73"],
+    screen: ["#1d3a12", "#2c5a1a", "#0a1408"],
+    glow: "rgba(185,213,72,0.6)",
+    ring: "#b9d548",
+    ringMid: "#d8e88f",
+    ringCore: "#eef7c0",
+    accent: "#a8bd73",
+    faint: "#e8efd0",
+  },
+} as const;
+
+export default function IPhoneArt({
+  className = "",
+  tone = "blue",
+}: DeviceArtProps) {
+  const t = tones[tone];
+
   return (
     <svg
       viewBox="0 0 200 420"
@@ -11,21 +40,21 @@ export default function IPhoneArt({ className = "" }: DeviceArtProps) {
       aria-label="iPhone premium com tela vibrante"
     >
       <defs>
-        <linearGradient id="ip-frame" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#f5f5f7" />
-          <stop offset="45%" stopColor="#b8b8c0" />
-          <stop offset="100%" stopColor="#8e8e96" />
+        <linearGradient id={`ip-frame-${tone}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor={t.frame[0]} />
+          <stop offset="45%" stopColor={t.frame[1]} />
+          <stop offset="100%" stopColor={t.frame[2]} />
         </linearGradient>
-        <linearGradient id="ip-screen" x1="0" y1="0" x2="0.6" y2="1">
-          <stop offset="0%" stopColor="#0b2b5c" />
-          <stop offset="45%" stopColor="#123a7a" />
-          <stop offset="100%" stopColor="#04101f" />
+        <linearGradient id={`ip-screen-${tone}`} x1="0" y1="0" x2="0.6" y2="1">
+          <stop offset="0%" stopColor={t.screen[0]} />
+          <stop offset="45%" stopColor={t.screen[1]} />
+          <stop offset="100%" stopColor={t.screen[2]} />
         </linearGradient>
-        <radialGradient id="ip-glow" cx="0.5" cy="0.35" r="0.7">
-          <stop offset="0%" stopColor="rgba(0,160,255,0.55)" />
-          <stop offset="100%" stopColor="rgba(0,160,255,0)" />
+        <radialGradient id={`ip-glow-${tone}`} cx="0.5" cy="0.35" r="0.7">
+          <stop offset="0%" stopColor={t.glow} />
+          <stop offset="100%" stopColor="rgba(0,0,0,0)" />
         </radialGradient>
-        <linearGradient id="ip-sheen" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id={`ip-sheen-${tone}`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="rgba(255,255,255,0.28)" />
           <stop offset="50%" stopColor="rgba(255,255,255,0)" />
         </linearGradient>
@@ -38,7 +67,7 @@ export default function IPhoneArt({ className = "" }: DeviceArtProps) {
         width="172"
         height="404"
         rx="38"
-        fill="url(#ip-frame)"
+        fill={`url(#ip-frame-${tone})`}
       />
       {/* Antenna lines */}
       <rect x="14" y="78" width="172" height="2" fill="#7a7a82" opacity="0.5" />
@@ -59,7 +88,7 @@ export default function IPhoneArt({ className = "" }: DeviceArtProps) {
         width="152"
         height="372"
         rx="28"
-        fill="url(#ip-screen)"
+        fill={`url(#ip-screen-${tone})`}
       />
       {/* Screen glow */}
       <rect
@@ -68,7 +97,7 @@ export default function IPhoneArt({ className = "" }: DeviceArtProps) {
         width="152"
         height="372"
         rx="28"
-        fill="url(#ip-glow)"
+        fill={`url(#ip-glow-${tone})`}
       />
       {/* Dynamic Island */}
       <rect
@@ -80,13 +109,13 @@ export default function IPhoneArt({ className = "" }: DeviceArtProps) {
         fill="#000"
       />
       {/* Screen content: abstract wallpaper rings */}
-      <circle cx="148" cy="120" r="34" fill="none" stroke="#2f7be0" strokeWidth="3" opacity="0.7" />
-      <circle cx="148" cy="120" r="22" fill="none" stroke="#5aa2f2" strokeWidth="3" opacity="0.6" />
-      <circle cx="148" cy="120" r="10" fill="#7fc0ff" opacity="0.8" />
-      <circle cx="60" cy="200" r="26" fill="none" stroke="#e0c06a" strokeWidth="2.5" opacity="0.5" />
-      <circle cx="140" cy="280" r="18" fill="none" stroke="#cfd4e0" strokeWidth="2" opacity="0.35" />
+      <circle cx="148" cy="120" r="34" fill="none" stroke={t.ring} strokeWidth="3" opacity="0.7" />
+      <circle cx="148" cy="120" r="22" fill="none" stroke={t.ringMid} strokeWidth="3" opacity="0.6" />
+      <circle cx="148" cy="120" r="10" fill={t.ringCore} opacity="0.8" />
+      <circle cx="60" cy="200" r="26" fill="none" stroke={t.accent} strokeWidth="2.5" opacity="0.5" />
+      <circle cx="140" cy="280" r="18" fill="none" stroke={t.faint} strokeWidth="2" opacity="0.35" />
       {/* Sheen */}
-      <rect x="24" y="24" width="152" height="372" rx="28" fill="url(#ip-sheen)" opacity="0.6" />
+      <rect x="24" y="24" width="152" height="372" rx="28" fill={`url(#ip-sheen-${tone})`} opacity="0.6" />
       {/* Side buttons */}
       <rect x="8" y="120" width="6" height="46" rx="3" fill="#9a9aa2" />
       <rect x="8" y="180" width="6" height="60" rx="3" fill="#9a9aa2" />
