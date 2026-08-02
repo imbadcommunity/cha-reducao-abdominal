@@ -149,7 +149,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="flex items-start gap-2.5 hover:text-white transition-colors"
                 >
-                  <MessageCircle size={16} className="mt-0.5 shrink-0 text-[#4ade80]" />
+                  <MessageCircle size={16} className="mt-0.5 shrink-0 text-white/60" />
                   {site.phoneDisplay}
                 </a>
               </li>

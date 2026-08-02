@@ -57,7 +57,7 @@ export default function Promotions() {
                   {/* Content */}
                   <div className="p-7 lg:p-9">
                     <div className="flex items-center gap-3 mb-3">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#22c55e]/15 text-[#4ade80] text-xs font-semibold">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-white/85 text-xs font-semibold">
                         <Zap size={12} />
                         {promo.tag}
                       </span>
@@ -126,7 +126,7 @@ export default function Promotions() {
             whileTap={{ scale: 0.97 }}
             className="btn btn-white"
           >
-            <MessageCircle size={18} className="text-[#22c55e]" />
+            <MessageCircle size={18} className="text-ink" />
             Quero saber todas as ofertas
           </motion.a>
         </ScrollReveal>

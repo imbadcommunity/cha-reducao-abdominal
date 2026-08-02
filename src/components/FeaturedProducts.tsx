@@ -118,10 +118,10 @@ export default function FeaturedProducts() {
               rel="noopener noreferrer"
               className="group relative h-full min-h-[300px] rounded-[20px] overflow-hidden bg-ink flex flex-col justify-between p-7 transition-transform duration-500 hover:-translate-y-1.5"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#22c55e]/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative">
-                <div className="w-14 h-14 rounded-2xl bg-[#22c55e]/15 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-500">
-                  <MessageCircle size={26} className="text-[#4ade80]" />
+                <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-500">
+                  <MessageCircle size={26} className="text-white/90" />
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-2">
                   Não achou o que procura?
@@ -131,7 +131,7 @@ export default function FeaturedProducts() {
                   modelos e configurações sob consulta.
                 </p>
               </div>
-              <div className="relative mt-6 inline-flex items-center gap-2 text-[#4ade80] font-semibold text-sm">
+              <div className="relative mt-6 inline-flex items-center gap-2 text-white/90 font-semibold text-sm">
                 Chamar no WhatsApp
                 <ArrowRight size={16} className="group-hover:translate-x-1.5 transition-transform" />
               </div>
