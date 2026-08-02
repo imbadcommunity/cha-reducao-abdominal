@@ -12,8 +12,9 @@ export default function ProgressBar() {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 right-0 h-1 bg-green-dark z-[60] origin-left"
+      className="fixed top-0 left-0 right-0 h-[2px] bg-brand z-[70] origin-left"
       style={{ scaleX }}
+      aria-hidden="true"
     />
   );
 }

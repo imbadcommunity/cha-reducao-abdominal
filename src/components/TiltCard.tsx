@@ -12,19 +12,19 @@ interface TiltCardProps {
 export default function TiltCard({
   children,
   className = "",
-  intensity = 10,
+  intensity = 8,
 }: TiltCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const mx = useMotionValue(0.5);
   const my = useMotionValue(0.5);
 
   const rotateX = useSpring(useTransform(my, [0, 1], [intensity, -intensity]), {
-    stiffness: 200,
-    damping: 20,
+    stiffness: 180,
+    damping: 24,
   });
   const rotateY = useSpring(useTransform(mx, [0, 1], [-intensity, intensity]), {
-    stiffness: 200,
-    damping: 20,
+    stiffness: 180,
+    damping: 24,
   });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {

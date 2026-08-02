@@ -9,6 +9,7 @@ interface CountUpProps {
   prefix?: string;
   suffix?: string;
   className?: string;
+  decimal?: boolean;
 }
 
 export default function CountUp({
@@ -17,6 +18,7 @@ export default function CountUp({
   prefix = "",
   suffix = "",
   className = "",
+  decimal = false,
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
@@ -35,13 +37,15 @@ export default function CountUp({
 
   useEffect(() => {
     spring.on("change", (v) => {
-      setDisplay(
-        prefix +
-          Math.round(v).toLocaleString("pt-BR") +
-          suffix
-      );
+      const formatted = decimal
+        ? v.toLocaleString("pt-BR", {
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1,
+          })
+        : Math.round(v).toLocaleString("pt-BR");
+      setDisplay(prefix + formatted + suffix);
     });
-  }, [spring, prefix, suffix]);
+  }, [spring, prefix, suffix, decimal]);
 
   return (
     <span ref={ref} className={className}>

@@ -23,10 +23,10 @@ export default function ScrollReveal({
   once = true,
 }: ScrollRevealProps) {
   const directionMap = {
-    up: { y: 60, x: 0 },
-    down: { y: -60, x: 0 },
-    left: { y: 0, x: 60 },
-    right: { y: 0, x: -60 },
+    up: { y: 32, x: 0 },
+    down: { y: -32, x: 0 },
+    left: { y: 0, x: 40 },
+    right: { y: 0, x: -40 },
     none: { y: 0, x: 0 },
   };
 
@@ -35,8 +35,8 @@ export default function ScrollReveal({
       initial={{
         opacity: 0,
         ...directionMap[direction],
-        filter: blur ? "blur(12px)" : "blur(0px)",
-        scale: direction === "none" ? 0.9 : 1,
+        filter: blur ? "blur(10px)" : "blur(0px)",
+        scale: direction === "none" ? 0.94 : 1,
       }}
       whileInView={{
         opacity: 1,
@@ -45,7 +45,7 @@ export default function ScrollReveal({
         scale: 1,
         filter: "blur(0px)",
       }}
-      viewport={{ once, margin: "-80px" }}
+      viewport={{ once, margin: "-70px" }}
       transition={{
         duration,
         delay,

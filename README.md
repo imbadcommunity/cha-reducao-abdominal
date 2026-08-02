@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Apple Store Premium
 
-## Getting Started
+Site institucional de altíssimo padrão para uma loja especializada em produtos Apple (iPhones, iPads, Apple Watch, MacBooks, AirPods e acessórios).
 
-First, run the development server:
+## Stack
+
+- Next.js 16 (App Router, Turbopack)
+- React 19
+- TypeScript
+- Tailwind CSS v4
+- Framer Motion (animações e movimento)
+- Lucide React (ícones)
+
+## Rodando o projeto
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build de produção:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm run start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Lint:
 
-## Learn More
+```bash
+npm run lint
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Estrutura
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+  app/
+    layout.tsx        # Root layout (SEO, Open Graph, Schema.org, fontes)
+    page.tsx          # Página principal (code splitting)
+    globals.css       # Design system (tokens, botões, cards, glass)
+    sitemap.ts        # Sitemap gerado
+    robots.ts         # Regras de indexação
+    icon.svg          # Favicon
+  components/
+    devices/          # Ilustrações SVG dos dispositivos
+    Navbar, Hero, FeaturedProducts, Categories, WhyUs, Promotions,
+    Testimonials, About, FinalCTA, Footer, WhatsAppFloat, BackToTop,
+    ProgressBar, Cursor, ScrollReveal, Parallax, TiltCard, MagneticButton, ...
+  lib/
+    site.ts           # Dados de contato e links (WhatsApp, endereço, horário)
+    data.ts           # Produtos, categorias, diferenciais, promoções, depoimentos
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Personalização
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Dados da loja / WhatsApp:** edite `src/lib/site.ts`.
+- **Produtos, preços e depoimentos:** edite `src/lib/data.ts`.
+- **Cores, espaçamentos e animações:** edite os tokens em `src/app/globals.css` (`:root`).
+- **URL / domínio canônico:** `site.url` em `src/app/layout.tsx` e `src/app/sitemap.ts`.

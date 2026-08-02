@@ -1,142 +1,72 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import Image from "next/image";
+import { motion } from "framer-motion";
+import { MessageCircle, LayoutGrid } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
-import FloatingParticles from "./FloatingParticles";
-import { ArrowRight, Zap } from "lucide-react";
+import IPhoneArt from "./devices/IPhoneArt";
+import MagneticButton from "./MagneticButton";
+import { whatsappLink, whatsappDefaultMessage } from "@/lib/site";
 
 export default function FinalCTA() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-  const bgY = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
-
   return (
     <section
-      ref={sectionRef}
-      id="cta"
-      className="relative py-24 sm:py-32 bg-gradient-to-br from-green-dark via-green-mid to-green-dark overflow-hidden"
+      className="relative overflow-hidden bg-ink text-white"
       aria-labelledby="cta-title"
     >
-      {/* Animated gradient background */}
-      <motion.div
-        style={{ y: bgY }}
-        className="absolute inset-0"
-      >
-        <motion.div
-          animate={{ scale: [1, 1.2, 1], opacity: [0.15, 0.25, 0.15] }}
-          transition={{ duration: 8, repeat: Infinity }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gold/20 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{ scale: [1.2, 1, 1.2], opacity: [0.1, 0.2, 0.1] }}
-          transition={{ duration: 10, repeat: Infinity }}
-          className="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl"
-        />
-      </motion.div>
-
-      <FloatingParticles count={14} type="leaves" className="text-gold/60" />
-
-      {/* Product image faintly in background */}
-      <div className="absolute inset-0 opacity-10">
-        <Image
-          src="/images/hero-tea.jpg"
-          alt=""
-          fill
-          className="object-cover"
-          sizes="100vw"
-        />
+      {/* Ambient */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-brand/15 blur-[140px]" />
+        <div className="absolute bottom-0 right-[10%] w-[380px] h-[380px] rounded-full bg-white/5 blur-[120px]" />
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <ScrollReveal>
+      <div className="relative container-premium py-24 sm:py-32 text-center">
+        <ScrollReveal className="max-w-3xl mx-auto">
           <motion.div
-            initial={{ scale: 0, rotate: -15 }}
-            whileInView={{ scale: 1, rotate: 0 }}
-            viewport={{ once: true }}
-            transition={{ type: "spring", stiffness: 200, damping: 15 }}
-            className="inline-block mb-8"
+            animate={{ y: [0, -12, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            className="relative flex justify-center mb-8"
           >
-            <motion.div
-              animate={{ scale: [1, 1.08, 1], rotate: [0, 4, -4, 0] }}
-              transition={{ duration: 5, repeat: Infinity }}
-              className="w-24 h-24 mx-auto rounded-3xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20"
-            >
-              <Image
-                src="/images/hero-tea.jpg"
-                alt="Chá Redução Abdominal"
-                width={64}
-                height={64}
-                className="rounded-2xl object-cover"
-              />
-            </motion.div>
+            <IPhoneArt className="w-32 sm:w-40 drop-shadow-[0_35px_55px_rgba(0,0,0,0.5)]" />
           </motion.div>
 
-          <h2
-            id="cta-title"
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6"
-          >
-            Experimente uma nova rotina com{" "}
-            <span className="gold-gradient">Chá Redução Abdominal</span>
+          <p className="section-kicker mb-4">Pronto para começar?</p>
+          <h2 id="cta-title" className="display-title mb-6">
+            Seu próximo Apple{" "}
+            <span className="metal-text">começa aqui.</span>
           </h2>
+          <p className="text-lg text-white/60 leading-relaxed max-w-xl mx-auto mb-10">
+            Fale agora com um consultor especializado ou explore nosso catálogo
+            completo. Sua experiência premium começa em um clique.
+          </p>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-white/80 text-lg max-w-2xl mx-auto mb-10"
-          >
-            Dê o primeiro passo em direção a uma rotina mais equilibrada e
-            natural. Seu corpo vai agradecer.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-          >
-            <motion.a
-              href="#"
-              whileHover={{ scale: 1.06, y: -3 }}
-              whileTap={{ scale: 0.97 }}
-              animate={{
-                boxShadow: [
-                  "0 0 20px rgba(212, 175, 55, 0.3)",
-                  "0 0 50px rgba(212, 175, 55, 0.6)",
-                  "0 0 20px rgba(212, 175, 55, 0.3)",
-                ],
-              }}
-              transition={{ duration: 2.5, repeat: Infinity }}
-              className="group inline-flex items-center gap-3 px-12 py-6 bg-gold text-green-dark font-bold text-xl rounded-2xl hover:bg-gold-light transition-colors relative overflow-hidden"
-            >
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-              QUERO COMEÇAR
-              <motion.span
-                animate={{ x: [0, 6, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="inline-flex"
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <MagneticButton>
+              <motion.a
+                href={whatsappLink(whatsappDefaultMessage)}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileTap={{ scale: 0.97 }}
+                className="btn btn-primary !px-9 !py-4 text-lg"
               >
-                <ArrowRight size={24} />
-              </motion.span>
-            </motion.a>
-          </motion.div>
+                <MessageCircle size={20} />
+                Solicitar Atendimento
+              </motion.a>
+            </MagneticButton>
+            <MagneticButton>
+              <motion.a
+                href="#produtos"
+                whileTap={{ scale: 0.97 }}
+                className="btn btn-white !px-9 !py-4 text-lg"
+              >
+                <LayoutGrid size={20} />
+                Ver Catálogo
+              </motion.a>
+            </MagneticButton>
+          </div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-            className="text-white/50 text-sm mt-8 flex items-center justify-center gap-2"
-          >
-            <Zap size={14} className="text-gold" />
-            Lotes sujeitos à disponibilidade.
-          </motion.p>
+          <p className="mt-8 text-sm text-white/40">
+            Atendimento de Segunda a Sábado • Resposta em minutos
+          </p>
         </ScrollReveal>
       </div>
     </section>

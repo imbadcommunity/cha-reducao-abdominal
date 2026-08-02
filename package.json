@@ -1,6 +1,6 @@
 {
-  "name": "cha-reducao-abdominal",
-  "version": "0.1.0",
+  "name": "apple-store",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",

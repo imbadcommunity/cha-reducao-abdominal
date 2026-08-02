@@ -2,51 +2,9 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import ScrollReveal from "./ScrollReveal";
 import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
-
-const testimonials = [
-  {
-    name: "Ana Paula Souza",
-    city: "São Paulo, SP",
-    rating: 5,
-    comment:
-      "Incluí o chá na minha rotina matinal e tenho me sentido mais leve e disposta. O sabor é incrível!",
-    initials: "AP",
-  },
-  {
-    name: "Carlos Mendes",
-    city: "Belo Horizonte, MG",
-    rating: 5,
-    comment:
-      "Não esperava muito, mas surpreendeu. O aroma é maravilhoso e o preparo é super prático. Recomendo!",
-    initials: "CM",
-  },
-  {
-    name: "Fernanda Lima",
-    city: "Curitiba, PR",
-    rating: 5,
-    comment:
-      "Uso há dois meses e amo o sabor. Virou parte da minha rotina de cuidados comigo mesma.",
-    initials: "FL",
-  },
-  {
-    name: "Roberto Alves",
-    city: "Rio de Janeiro, RJ",
-    rating: 5,
-    comment:
-      "Chá de excelente qualidade. Os ingredientes são percebidos no sabor e no aroma. Muito satisfeito!",
-    initials: "RA",
-  },
-  {
-    name: "Mariana Costa",
-    city: "Salvador, BA",
-    rating: 5,
-    comment:
-      "Presenteei minha mãe e agora compramos juntas toda semana. Nosso momento de bem-estar!",
-    initials: "MC",
-  },
-];
+import SectionHeading from "./SectionHeading";
+import { testimonials } from "@/lib/data";
 
 export default function Testimonials() {
   const [current, setCurrent] = useState(0);
@@ -73,23 +31,20 @@ export default function Testimonials() {
 
   const variants = {
     enter: (dir: number) => ({
-      x: dir > 0 ? 300 : -300,
+      x: dir > 0 ? 280 : -280,
       opacity: 0,
-      rotateY: dir > 0 ? 15 : -15,
-      scale: 0.9,
+      scale: 0.94,
     }),
     center: {
       x: 0,
       opacity: 1,
-      rotateY: 0,
       scale: 1,
-      transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
+      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
     },
     exit: (dir: number) => ({
-      x: dir > 0 ? -300 : 300,
+      x: dir > 0 ? -280 : 280,
       opacity: 0,
-      rotateY: dir > 0 ? -15 : 15,
-      scale: 0.9,
+      scale: 0.94,
       transition: { duration: 0.4 },
     }),
   };
@@ -98,33 +53,29 @@ export default function Testimonials() {
 
   return (
     <section
-      className="relative py-20 sm:py-28 bg-white overflow-hidden"
+      id="depoimentos"
+      className="section-pad bg-cloud"
       aria-labelledby="depoimentos-title"
     >
-      {/* Decorative quotes */}
-      <div className="absolute top-16 left-10 text-[200px] font-serif text-green-dark/5 select-none leading-none">&ldquo;</div>
-      <div className="absolute bottom-16 right-10 text-[200px] font-serif text-green-dark/5 select-none leading-none">&rdquo;</div>
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal className="text-center mb-16">
-          <motion.span
-            whileInView={{ scale: [1, 1.2, 1] }}
-            viewport={{ once: true }}
-            className="inline-block text-green-dark text-sm font-semibold tracking-widest uppercase mb-3"
-          >
-            Depoimentos
-          </motion.span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
-            O que dizem nossos <span className="text-gradient">clientes</span>
-          </h2>
-        </ScrollReveal>
+      <div className="container-premium">
+        <SectionHeading
+          kicker="Depoimentos"
+          title="Quem comprou,"
+          highlight="recomenda."
+          subtitle="Experiências reais de clientes que vivem o melhor da tecnologia Apple."
+        />
 
         <div
-          className="relative max-w-2xl mx-auto [perspective:1200px]"
+          className="relative max-w-3xl mx-auto"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-cream to-white p-8 sm:p-12 min-h-[340px] flex items-center shadow-xl shadow-green-dark/5 border border-green-dark/5">
+          <div className="relative rounded-[28px] bg-white border border-line shadow-2xl shadow-black/10 p-8 sm:p-12 min-h-[360px] flex items-center overflow-hidden">
+            {/* Decorative quote */}
+            <div className="absolute -top-4 -left-2 text-[180px] font-serif text-brand/5 leading-none select-none">
+              &ldquo;
+            </div>
+
             <AnimatePresence custom={direction} mode="wait">
               <motion.div
                 key={current}
@@ -133,64 +84,78 @@ export default function Testimonials() {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                className="w-full text-center"
-                style={{ transformStyle: "preserve-3d" }}
+                className="w-full relative"
               >
-                <motion.div
-                  animate={{ rotate: [0, 8, 0], scale: [1, 1.1, 1] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                  className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-green-dark flex items-center justify-center"
-                >
-                  <Quote size={22} className="text-white" />
-                </motion.div>
-                <motion.p
-                  key={t.comment}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className="text-gray-700 text-lg sm:text-xl leading-relaxed mb-6 italic"
-                >
-                  &ldquo;{t.comment}&rdquo;
-                </motion.p>
-                <div className="flex items-center justify-center gap-1 mb-3">
-                  {[...Array(t.rating)].map((_, i) => (
-                    <motion.span
-                      key={i}
-                      initial={{ opacity: 0, scale: 0, rotate: -30 }}
-                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                      transition={{ delay: 0.3 + i * 0.1, type: "spring", stiffness: 200 }}
-                    >
-                      <Star size={16} className="fill-gold text-gold" />
-                    </motion.span>
-                  ))}
+                {/* Avatar */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5 mb-6">
+                  <motion.div
+                    initial={{ scale: 0, rotate: -12 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 20,
+                      delay: 0.15,
+                    }}
+                    className="relative w-16 h-16 rounded-full metal silver-ring flex items-center justify-center shrink-0 shadow-lg shadow-black/10"
+                  >
+                    <span className="text-lg font-bold text-ink">
+                      {t.initials}
+                    </span>
+                    <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-brand border-2 border-white flex items-center justify-center">
+                      <span className="text-[10px] text-white font-bold">✓</span>
+                    </span>
+                  </motion.div>
+                  <div>
+                    <p className="font-bold text-ink text-lg">{t.name}</p>
+                    <p className="text-sm text-slate-light">{t.city}</p>
+                    <div className="flex items-center gap-1 mt-1.5">
+                      {[...Array(t.rating)].map((_, i) => (
+                        <motion.span
+                          key={i}
+                          initial={{ opacity: 0, scale: 0, rotate: -30 }}
+                          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                          transition={{
+                            delay: 0.25 + i * 0.08,
+                            type: "spring",
+                            stiffness: 220,
+                          }}
+                        >
+                          <Star
+                            size={15}
+                            className="fill-[#f5b301] text-[#f5b301]"
+                          />
+                        </motion.span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <motion.div
-                  initial={{ scale: 0, rotate: -10 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ type: "spring", stiffness: 300, delay: 0.3 }}
-                  className="w-14 h-14 mx-auto mb-3 rounded-full bg-gradient-to-br from-green-dark to-green-mid flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-green-dark/30"
-                >
-                  {t.initials}
-                </motion.div>
-                <p className="font-bold text-gray-900">{t.name}</p>
-                <p className="text-gray-500 text-sm">{t.city}</p>
+
+                <p className="text-ink/85 text-lg sm:text-xl leading-relaxed mb-6">
+                  &ldquo;{t.comment}&rdquo;
+                </p>
+
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cloud text-sm font-medium text-slate-mid">
+                  <Quote size={14} className="text-brand" />
+                  Comprou: {t.product}
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>
 
           {/* Controls */}
-          <div className="flex items-center justify-center gap-4 mt-6">
+          <div className="flex items-center justify-center gap-4 mt-7">
             <motion.button
-              whileHover={{ scale: 1.15, rotate: -8 }}
+              whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={prev}
               aria-label="Depoimento anterior"
-              className="w-11 h-11 rounded-full bg-white border border-gray-200 shadow-lg flex items-center justify-center text-green-dark hover:bg-green-dark hover:text-white transition-colors cursor-pointer"
+              className="w-11 h-11 rounded-full bg-white border border-line shadow-sm flex items-center justify-center text-ink hover:bg-ink hover:text-white transition-colors cursor-pointer"
             >
               <ChevronLeft size={20} />
             </motion.button>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2" role="tablist" aria-label="Navegação de depoimentos">
               {testimonials.map((_, i) => (
                 <button
                   key={i}
@@ -198,29 +163,28 @@ export default function Testimonials() {
                     setDirection(i > current ? 1 : -1);
                     setCurrent(i);
                   }}
+                  role="tab"
+                  aria-selected={i === current}
                   aria-label={`Ir para depoimento ${i + 1}`}
-                  className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                    i === current ? "w-8 bg-green-dark" : "w-2.5 bg-gray-300 hover:bg-gray-400"
+                  className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${
+                    i === current
+                      ? "w-8 bg-brand"
+                      : "w-2 bg-ink/15 hover:bg-ink/30"
                   }`}
                 />
               ))}
             </div>
 
             <motion.button
-              whileHover={{ scale: 1.15, rotate: 8 }}
+              whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={next}
               aria-label="Próximo depoimento"
-              className="w-11 h-11 rounded-full bg-white border border-gray-200 shadow-lg flex items-center justify-center text-green-dark hover:bg-green-dark hover:text-white transition-colors cursor-pointer"
+              className="w-11 h-11 rounded-full bg-white border border-line shadow-sm flex items-center justify-center text-ink hover:bg-ink hover:text-white transition-colors cursor-pointer"
             >
               <ChevronRight size={20} />
             </motion.button>
           </div>
-
-          <p className="text-center text-gray-400 text-xs mt-6">
-            *Depoimentos refletem experiências individuais. Resultados podem
-            variar de pessoa para pessoa.
-          </p>
         </div>
       </div>
     </section>
